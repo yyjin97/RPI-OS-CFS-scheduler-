@@ -19,12 +19,15 @@ bool need_resched(void)
 
 void update_rq_clock(struct cfs_rq *cfs_rq)
 {
-	s64 delta;
+
+	cfs_rq->clock_task = timer_clock();
+
+	/*s64 delta;
 
 	delta = timer_clock() - cfs_rq->clock_task;
 	if(delta < 0)
 		return;
-	cfs_rq->clock_task += delta;
+	cfs_rq->clock_task += delta;*/
 }
 
 /* 현재 task에 resched 요청 플래그를 설정함 */
@@ -34,9 +37,6 @@ void resched_curr(struct sched_entity *se)
 
 	if(test_tsk_need_resched(curr))
 		return;
-
-	/* curr의 런큐가 현재 사용중인 cpu인지 확인하고 polling signal?을 보내는 부분 제외
-		(현재 RPI OS version에서는 0번 core만 사용하기 때문) */
 
 	set_tsk_need_resched(curr);
 	
@@ -70,7 +70,7 @@ void sched_init(void)
 	init_task.se.exec_start = cfs_rq.clock_task;
 	init_task.se.vruntime = cfs_rq.min_vruntime;
 
-	place_entity(&cfs_rq, &current->se, 1);
+	place_entity(&cfs_rq, &current->se);
 
 	enqueue_entity(&cfs_rq, &init_task.se);
 }
@@ -133,8 +133,11 @@ void timer_tick(void)
 
 	task_tick_fair(current);
 	enable_irq();
-	if(need_resched()) 
+	if(need_resched()) {
+		printf("\n\rpid: %d , weight: %d , total execute time: %d vruntime: %d\n\r",
+			current->pid, current->se.load.weight, current->se.sum_exec_runtime, current->se.vruntime);
 		_schedule();
+	}
 	
 	disable_irq();
 }
@@ -152,10 +155,9 @@ void exit_process(){
 		schedule();
 	}
 
-	/*
 	for(int i =0;i<tsk->mm.kernel_pages_count;i++) {
 		free_page(tsk->mm.kernel_pages[i]);
-	} */
+	} 
 
 	for(int i =0;i<tsk->mm.user_pages_count;i++) {
 		free_page(tsk->mm.user_pages[i].phys_addr);

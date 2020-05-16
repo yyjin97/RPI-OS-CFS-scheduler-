@@ -5,6 +5,8 @@
 #include "entry.h"
 #include "fair.h"
 
+static int prio = 120;
+
 int copy_process(unsigned long clone_flags, unsigned long fn, unsigned long arg)
 {
 	preempt_disable();
@@ -27,7 +29,8 @@ int copy_process(unsigned long clone_flags, unsigned long fn, unsigned long arg)
 		copy_virt_memory(p);
 	}
 	p->flags = clone_flags;
-	p->priority = current->priority;
+	prio -= 2;
+	p->priority = prio;
 	p->state = TASK_RUNNING;
 	p->thread_info.preempt_count = 1; //disable preemtion until schedule_tail
 

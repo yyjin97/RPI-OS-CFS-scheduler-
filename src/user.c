@@ -17,10 +17,16 @@ void loop(char* str)
 void loop_n(char* str)
 {
 	char buf[2] = {""};
-	for (int i = 0; i < 5; i++){
-		buf[0] = str[i];
-		call_sys_write(buf);
-		user_delay(1000000);
+	int k = 0;
+	while(1) {
+		for (int i = 0; i < 5; i++){
+			buf[0] = str[i];
+			call_sys_write(buf);
+			user_delay(1000000);
+		}
+		k++;
+		if(k == 100)
+			break;
 	}
 	call_sys_exit();
 }
@@ -37,13 +43,13 @@ void user_process()
 	}
 	
 	if (pid == 0){
-		loop("abcde");
+		loop("00000");
 	} else {
 		pid = call_sys_fork();
 		if(pid == 0) {
-			loop_n("12345");
+			loop_n("*****");
 		} else {
-			loop("@#$^&");
+			loop("aaaaa");
 		}
 	}
 }

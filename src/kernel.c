@@ -1,6 +1,3 @@
-#include <stddef.h>
-#include <stdint.h>
-
 #include "printf.h"
 #include "utils.h"
 #include "timer.h"
@@ -10,7 +7,6 @@
 #include "mini_uart.h"
 #include "sys.h"
 #include "user.h"
-
 
 void kernel_process(){
 	printf("Kernel process started. EL %d\r\n", get_el());
@@ -23,7 +19,6 @@ void kernel_process(){
 	} 
 }
 
-
 void kernel_main()
 {
 	uart_init();
@@ -35,7 +30,6 @@ void kernel_main()
 	enable_irq();
 
 	int res = copy_process(PF_KTHREAD, (unsigned long)&kernel_process, 0);
-
 	if (res < 0) {
 		printf("error while starting kernel process");
 		return;
