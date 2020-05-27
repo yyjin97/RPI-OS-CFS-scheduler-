@@ -298,7 +298,7 @@ void enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
 	se->on_rq = 1;
 }
 
-/* rbtree에서 프로세스를 추가 */
+/* rbtree에서 프로세스를 제거 */
 void dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se) 
 {
 	update_curr(cfs_rq);

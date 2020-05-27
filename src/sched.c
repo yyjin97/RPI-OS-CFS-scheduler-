@@ -123,6 +123,7 @@ void schedule_tail(void) {
 	preempt_enable();
 }
 
+static int p[3];
 
 void timer_tick(void)
 {
@@ -134,8 +135,13 @@ void timer_tick(void)
 	task_tick_fair(current);
 	enable_irq();
 	if(need_resched()) {
-		printf("\n\rpid: %d , weight: %d , total execute time: %d vruntime: %d\n\r",
-			current->pid, current->se.load.weight, current->se.sum_exec_runtime, current->se.vruntime);
+		int total = timer_clock();
+		int pid = current->pid;
+		p[pid - 1] = current->se.sum_exec_runtime;
+
+		//process별 실행 시간 정보 출력 
+		printf("\n\r p1: %d(%d%%)   p2: %d(%d%%)   p3: %d(%d%%)   total: %d \n\r",
+			p[0], (p[0]*100)/total, p[1], (p[1]*100)/total, p[2], (p[2]*100)/total, total);
 		_schedule();
 	}
 	

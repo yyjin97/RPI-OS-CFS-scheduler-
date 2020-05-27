@@ -25,7 +25,7 @@ void loop_n(char* str)
 			user_delay(1000000);
 		}
 		k++;
-		if(k == 100)
+		if(k == 50)
 			break;
 	}
 	call_sys_exit();
@@ -43,13 +43,13 @@ void user_process()
 	}
 	
 	if (pid == 0){
-		loop("00000");
+		loop("22222");
 	} else {
 		pid = call_sys_fork();
 		if(pid == 0) {
-			loop_n("*****");
+			loop_n("33333");
 		} else {
-			loop("aaaaa");
+			loop("11111");
 		}
 	}
 }
