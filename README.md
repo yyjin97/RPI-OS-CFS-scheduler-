@@ -3,6 +3,8 @@
 
 Raspberry pi os with CFS(_Completely Fair Scheduler_), the default Linux scheduler.
 
+This code is the actual Linux source code analyzed and applied to the Raspberry Pi OS.
+
 ## Getting started
 
 
