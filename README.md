@@ -10,7 +10,7 @@ This is an analysis of the actual Linux source code and applied to the Raspberry
 
 ### Prerequisites
 
- 1. Raspberry Pi 3 Model B 
+ 1. Raspberry Pi 3 Model B+
  2. USB to TTL serial cable
  3. SD card with installed Raspbian OS
 
